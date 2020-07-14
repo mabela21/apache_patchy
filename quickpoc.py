@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 
 import os
-import datetime
 
 def main():
 
     original_conf_contents = []
-
     ServerTokens_isPresent = False
     ServerSignature_isPresent = False
     FileETags_isPresent = False
