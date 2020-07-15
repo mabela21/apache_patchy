@@ -46,7 +46,15 @@ def change_setting(w_list, setting, new_setting):
 		print(items)
                 #print(find_replace(items, 'ServerTokens', 'ServerTokens Prod'))
 		find_replace(items, setting, new_setting)
+		add_to_log(items, new_setting)
 	w_list.clear()
+
+def add_to_log(file, new_setting):
+	global log_file
+	log_line = file + ': ' + new_setting
+	return log_file.append(log_line)
+
+log_file = list()
 
 def main():
 	# directroy of apache config files
@@ -56,7 +64,6 @@ def main():
 	# a list that will keep track of files with different config settings
 	#working_list = list()
 	#print(file_list)
-
 	# Server Tokens setting
 	working_list = get_working_list(file_list, 'ServerTokens')
 	#print(working_list)
@@ -95,6 +102,12 @@ def main():
 	user_def = input('Enter Keep ALive Timeout setting: ')
 	change_setting(working_list, 'KeepAliveTimeout', 'KeepAliveTimeout ' + user_def)
 	working_list.clear()
+
+	# write the log file
+	with open('log_file.log', 'w+') as final_log:
+		for events in log_file:
+			final_log.write(events + '\n')
+
 
 if __name__ == "__main__":
 	main()
