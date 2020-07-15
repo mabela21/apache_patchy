@@ -37,7 +37,7 @@ def find_replace(file, item, new_line):
                 for lines in rewritten_file:
                         new_config.write(lines)
 
-# function to comment, uncomment a file
+# function to comment, a file
 def comment_settings(file, item):
         rewritten_file = []
         re_item = r'\b' + re.escape(item) + r'\b'
@@ -63,7 +63,7 @@ def get_working_list(f_list, setting):
 def change_setting(w_list, setting, new_setting, set_func):
 	if set_func == 'find_replace':
 		for items in w_list:
-			print(items)
+			#print(items)
 			find_replace(items, setting, new_setting)
 			add_to_log(items, new_setting)
 	elif set_func == 'uncomment':
@@ -125,7 +125,7 @@ def main():
 	# Keep Alive setting
 	setting = 'KeepAlive'
 	bp_setting = 'KeepAlive On'
-	url = 'https://apache-patchy.gitbook.io/guide/info-leakage'
+	url = 'https://apache-patchy.gitbook.io/guide/dos-attacks'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
@@ -136,7 +136,7 @@ def main():
 	# ETag settings
 	setting = 'FileETag'
 	bp_setting = 'FileETag None'
-	url = 'PLACEHOLDER'
+	url = 'https://apache-patchy.gitbook.io/guide/info-leakage'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
@@ -147,7 +147,7 @@ def main():
 	# Timeout settings
 	setting = 'Timeout'
 	bp_setting = 'Timeout <TIME IN SECONDS>'
-	url = 'PLACEHOLDER'
+	url = 'https://apache-patchy.gitbook.io/guide/dos-attacks'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
@@ -160,7 +160,7 @@ def main():
 	# Max Keep Alive Requests
 	setting = 'MaxKeepAliveRequests'
 	bp_setting = 'MaxKeepAliveRequests 0'
-	url = 'PLACEHOLDER'
+	url = 'https://apache-patchy.gitbook.io/guide/dos-attacks'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
@@ -171,7 +171,7 @@ def main():
 	# Keep Alive Timeout
 	setting = 'KeepAliveTimeout'
 	bp_setting = 'KeepAliveTimeout <TIME IN SECONDS>'
-	url = 'PLACEHOLDER'
+	url = 'https://apache-patchy.gitbook.io/guide/dos-attacks'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
@@ -195,7 +195,7 @@ def main():
 	# Disable Trace enable
 	setting = 'TraceEnable'
 	bp_setting = 'TraceEnable Off'
-	url = 'PLACEHOLDER'
+	url = 'https://apache-patchy.gitbook.io/guide/reducing-your-attack-service'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
@@ -206,13 +206,28 @@ def main():
 	# Set log level
 	setting = 'LogLevel'
 	bp_setting = 'LogLevel info'
-	url = 'PLACEHOLDER'
+	url = 'https://apache-patchy.gitbook.io/guide/logging-monitoring-maintenance'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
 		working_list = get_working_list(file_list, setting)
 		change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
+
+	# Limit Requestline
+	#setting = 'LimitRequestline'
+	#bp_setting = 'LimitRequestline 512'
+	#url = 'https://apache-patchy.gitbook.io/guide/preventing-buffer-overflow-attacks'
+	#ch_setting_func = 'find_replace'
+	#user_change = user_prompt_settings(setting, url, bp_setting)
+	#if user_change:
+	#	working_list = get_working_list(file_list, setting)
+	#	if not working_list:
+	#		for x in file_list:
+	#			if 'apache2.conf' in x:
+	#				working_list.append(x)
+	#	change_setting(working_list, setting, bp_setting, ch_setting_func)
+	#	working_list.clear()
 
 	# write the log file
 	with open('log_file.log', 'w+') as final_log:
