@@ -37,6 +37,20 @@ def find_replace(file, item, new_line):
                 for lines in rewritten_file:
                         new_config.write(lines)
 
+# function to comment, uncomment a file
+def comment_settings(file, item):
+        rewritten_file = []
+        re_item = r'\b' + re.escape(item) + r'\b'
+        with open(file, 'r') as open_file:
+                for lines in open_file:
+                        if re.match(re_item, lines) and '#' not in lines:
+                                rewritten_file.append('#' + lines)
+                        else:
+                                rewritten_file.append(lines)
+        with open(file, 'w+') as new_config:
+                for lines in rewritten_file:
+                        new_config.write(lines)
+
 # generate a list of config files with the setting to change
 def get_working_list(f_list, setting):
 	working_list = list()
@@ -46,12 +60,19 @@ def get_working_list(f_list, setting):
 	return working_list
 
 # change the setting with proper function
-def change_setting(w_list, setting, new_setting):
-	for items in w_list:
-		print(items)
-		find_replace(items, setting, new_setting)
-		add_to_log(items, new_setting)
+def change_setting(w_list, setting, new_setting, set_func):
+	if set_func == 'find_replace':
+		for items in w_list:
+			print(items)
+			find_replace(items, setting, new_setting)
+			add_to_log(items, new_setting)
+	elif set_func == 'uncomment':
+		for items in w_list:
+			print(items)
+			comment_settings(items, setting)
+			add_to_log(items, new_setting)
 	w_list.clear()
+	print('\n')
 
 # add setting change to the log file
 def add_to_log(file, new_setting):
@@ -83,81 +104,120 @@ def main():
 	setting = 'ServerTokens'
 	bp_setting = 'ServerTokens Prod'
 	url = 'https://apache-patchy.gitbook.io/guide/info-leakage'
+	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
 		working_list = get_working_list(file_list, setting)
-		change_setting(working_list, setting, bp_setting)
+		change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
 
 	# Server signature setting
 	setting = 'ServerSignature'
 	bp_setting = 'ServerSignature Off'
 	url = 'https://apache-patchy.gitbook.io/guide/info-leakage'
+	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
 		working_list = get_working_list(file_list, setting)
-		change_setting(working_list, setting, bp_setting)
+		change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
 
 	# Keep Alive setting
 	setting = 'KeepAlive'
 	bp_setting = 'KeepAlive On'
 	url = 'https://apache-patchy.gitbook.io/guide/info-leakage'
+	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
 		working_list = get_working_list(file_list, setting)
-		change_setting(working_list, setting, bp_setting)
+		change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
 
 	# ETag settings
 	setting = 'FileETag'
 	bp_setting = 'FileETag None'
 	url = 'PLACEHOLDER'
+	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
 		working_list = get_working_list(file_list, setting)
-		change_setting(working_list, setting, bp_setting)
+		change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
 
 	# Timeout settings
 	setting = 'Timeout'
 	bp_setting = 'Timeout <TIME IN SECONDS>'
 	url = 'PLACEHOLDER'
+	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
 		working_list = get_working_list(file_list, setting)
 		user_def = input('Enter an amount of Timeout setting in seconds: ')
 		bp_setting = 'Timeout ' + user_def
-		change_setting(working_list, setting, bp_setting)
+		change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
 
 	# Max Keep Alive Requests
 	setting = 'MaxKeepAliveRequests'
 	bp_setting = 'MaxKeepAliveRequests 0'
 	url = 'PLACEHOLDER'
+	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
-		working_list = get_working_list(file_list, 'MaxKeepAliveRequests')
-		change_setting(working_list, 'MaxKeepAliveRequests', 'MaxKeepAliveRequests 0')
+		working_list = get_working_list(file_list, setting)
+		change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
 
 	# Keep Alive Timeout
 	setting = 'KeepAliveTimeout'
 	bp_setting = 'KeepAliveTimeout <TIME IN SECONDS>'
 	url = 'PLACEHOLDER'
+	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
 		working_list = get_working_list(file_list, setting)
 		user_def = input('Enter Keep ALive Timeout setting: ')
 		bp_setting = 'KeepAliveTimeout ' + user_def
-		change_setting(working_list, setting, bp_setting)
+		change_setting(working_list, setting, bp_setting, ch_setting_func)
+		working_list.clear()
+
+	# Disable WebDav Module
+	#setting = 'LoadModule dav_'
+	#bp_setting = 'Disable WebDav Modules'
+	#url = 'PLACEHOLDER'
+	#ch_setting_func = 'uncomment'
+	#user_change = user_prompt_settings(setting, url, bp_setting)
+	#if user_change:
+	#	working_list = get_working_list(file_list, setting)
+	#	change_setting(working_list, setting, bp_setting, ch_setting_func)
+	#	working_list.clear()
+
+	# Disable Trace enable
+	setting = 'TraceEnable'
+	bp_setting = 'TraceEnable Off'
+	url = 'PLACEHOLDER'
+	ch_setting_func = 'find_replace'
+	user_change = user_prompt_settings(setting, url, bp_setting)
+	if user_change:
+		working_list = get_working_list(file_list, setting)
+		change_setting(working_list, setting, bp_setting, ch_setting_func)
+		working_list.clear()
+
+	# Set log level
+	setting = 'LogLevel'
+	bp_setting = 'LogLevel info'
+	url = 'PLACEHOLDER'
+	ch_setting_func = 'find_replace'
+	user_change = user_prompt_settings(setting, url, bp_setting)
+	if user_change:
+		working_list = get_working_list(file_list, setting)
+		change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
 
 	# write the log file
 	with open('log_file.log', 'w+') as final_log:
 		for events in log_file:
 			final_log.write(events + '\n')
-
 
 if __name__ == "__main__":
 	main()
