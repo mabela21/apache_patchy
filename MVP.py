@@ -229,7 +229,6 @@ def main():
 		working_list = get_working_list(file_list, setting)
 		change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
-
 	else:
                 print('\n')
 
