@@ -277,8 +277,8 @@ def main():
 
 	# Set log level
 	setting = 'LogLevel'
-	bp_setting = 'LogLevel info'
-	#bp_setting = 'LogLevel notice core:info'
+	#bp_setting = 'LogLevel info'
+	bp_setting = 'LogLevel notice core:info'
 	url = Fore.GREEN + 'For more info see --> [18] ' + Style.RESET_ALL + 'at https://apache-blue.gitbook.io/guide/logs'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
