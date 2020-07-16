@@ -117,6 +117,7 @@ def main():
 
 	# directroy of apache config files
 	directory = sys.argv[1]
+	default_conf = sys.argv[2]
 	# find all config files
 	file_list = conf_files(directory)
 
@@ -130,9 +131,12 @@ def main():
 		working_list = get_working_list(file_list, setting)
 		if not working_list:
 			for x in file_list:
-				if 'apache2.conf' in x:
+				if default_conf in x:
 					working_list.append(x)
 					create_rule(bp_setting, working_list)
+				else:
+					print('No default configuration file found to write to.')
+					
 		else:
 			change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
