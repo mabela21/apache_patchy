@@ -88,7 +88,7 @@ def add_to_log(file, new_setting):
 def create_rule(bestprac, file):
 	file_str = file.pop()
 	with open(file_str, 'a+') as new_config:
-		new_config.write(bestprac + '\n')
+		new_config.write(bestprac + '\n\n')
 	add_to_log(file_str, bestprac)
 	print('\n')
 
@@ -299,6 +299,57 @@ def main():
 	setting = 'LimitRequestline'
 	bp_setting = 'LimitRequestline 512'
 	url = Fore.GREEN + 'For more info see --> [29] ' + Style.RESET_ALL + 'https://apache-blue.gitbook.io/guide/bof-attacks'
+	ch_setting_func = 'find_replace'
+	user_change = user_prompt_settings(setting, url, bp_setting)
+	if user_change:
+		working_list = get_working_list(file_list, setting)
+		if not working_list:
+			for x in file_list:
+				if 'apache2.conf' in x:
+					working_list.append(x)
+					create_rule(bp_setting, working_list)
+		else:
+			change_setting(working_list, setting, bp_setting, ch_setting_func)
+		working_list.clear()
+		
+	# Limit Request Fields
+	setting = 'LimitRequestFields'
+	bp_setting = 'LimitRequestFields 100'
+	url = Fore.GREEN + 'For more info see --> [30] ' + Style.RESET_ALL + 'https://apache-blue.gitbook.io/guide/bof-attacks'
+	ch_setting_func = 'find_replace'
+	user_change = user_prompt_settings(setting, url, bp_setting)
+	if user_change:
+		working_list = get_working_list(file_list, setting)
+		if not working_list:
+			for x in file_list:
+				if 'apache2.conf' in x:
+					working_list.append(x)
+					create_rule(bp_setting, working_list)
+		else:
+			change_setting(working_list, setting, bp_setting, ch_setting_func)
+		working_list.clear()
+		
+	# Limit Request Field size
+	setting = 'LimitRequestFieldsize'
+	bp_setting = 'LimitRequestFieldsize 1024'
+	url = Fore.GREEN + 'For more info see --> [31] ' + Style.RESET_ALL + 'https://apache-blue.gitbook.io/guide/bof-attacks'
+	ch_setting_func = 'find_replace'
+	user_change = user_prompt_settings(setting, url, bp_setting)
+	if user_change:
+		working_list = get_working_list(file_list, setting)
+		if not working_list:
+			for x in file_list:
+				if 'apache2.conf' in x:
+					working_list.append(x)
+					create_rule(bp_setting, working_list)
+		else:
+			change_setting(working_list, setting, bp_setting, ch_setting_func)
+		working_list.clear()
+		
+	# Limit Request Body
+	setting = 'LimitRequestBody'
+	bp_setting = 'LimitRequestBody 102400'
+	url = Fore.GREEN + 'For more info see --> [32] ' + Style.RESET_ALL + 'https://apache-blue.gitbook.io/guide/bof-attacks'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
