@@ -32,7 +32,11 @@ def find_replace(file, item, new_line):
 	with open(file, 'r') as open_file:
 		for lines in open_file:
 			if re.match(re_item, lines):
-				rewritten_file.append(new_line + '\n')
+				if lines == new_line:
+					print('Best already enabled\n')
+					rewritten_file.append(lines)
+				else:
+					rewritten_file.append(new_line + '\n')
 			else:
 				rewritten_file.append(lines)
 	with open(file, 'w+') as new_config:
@@ -84,6 +88,13 @@ def add_to_log(file, new_setting):
 	log_line = dtnow + ': ' + file + ': ' + 'Changed setting to: ' + new_setting
 	return log_file.append(log_line)
 
+# create a rule if it does not exist in any conf files
+def create_rule(bestprac, file):
+        file_str = file.pop()
+        with open(file_str, 'a+') as new_config:
+                new_config.write(bestprac + '\n')
+        add_to_log(file_str, bestprac)
+
 # prompt user to make change to settings
 def user_prompt_settings(setting, url, new_setting):
 	print(f'{setting}: ' + Fore.YELLOW + 'Do you want to change setting to: ' + Fore.CYAN + f'{new_setting}' + '\n' + Style.RESET_ALL + url)
@@ -110,7 +121,13 @@ def main():
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
 		working_list = get_working_list(file_list, setting)
-		change_setting(working_list, setting, bp_setting, ch_setting_func)
+                if not working_list:
+                        for x in file_list:
+                                if 'apache2.conf' in x:
+                                        working_list.append(x)
+                                        create_rule(bp_setting, working_list)
+                else:
+                	change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
 	else:
 		print('\n')
@@ -123,7 +140,13 @@ def main():
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
 		working_list = get_working_list(file_list, setting)
-		change_setting(working_list, setting, bp_setting, ch_setting_func)
+                if not working_list:
+                        for x in file_list:
+                                if 'apache2.conf' in x:
+                                        working_list.append(x)
+                                        create_rule(bp_setting, working_list)
+                else:
+                	change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
 	else:
                 print('\n')
@@ -136,7 +159,13 @@ def main():
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
 		working_list = get_working_list(file_list, setting)
-		change_setting(working_list, setting, bp_setting, ch_setting_func)
+                if not working_list:
+                        for x in file_list:
+                                if 'apache2.conf' in x:
+                                        working_list.append(x)
+                                        create_rule(bp_setting, working_list)
+                else:
+                	change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
 	else:
                 print('\n')
@@ -149,7 +178,13 @@ def main():
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
 		working_list = get_working_list(file_list, setting)
-		change_setting(working_list, setting, bp_setting, ch_setting_func)
+                if not working_list:
+                        for x in file_list:
+                                if 'apache2.conf' in x:
+                                        working_list.append(x)
+                                        create_rule(bp_setting, working_list)
+                else:
+                	change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
 	else:
                 print('\n')
@@ -177,7 +212,13 @@ def main():
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
 		working_list = get_working_list(file_list, setting)
-		change_setting(working_list, setting, bp_setting, ch_setting_func)
+                if not working_list:
+                        for x in file_list:
+                                if 'apache2.conf' in x:
+                                        working_list.append(x)
+                                        create_rule(bp_setting, working_list)
+                else:
+                	change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
 	else:
                 print('\n')
@@ -216,7 +257,13 @@ def main():
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
 		working_list = get_working_list(file_list, setting)
-		change_setting(working_list, setting, bp_setting, ch_setting_func)
+                if not working_list:
+                        for x in file_list:
+                                if 'apache2.conf' in x:
+                                        working_list.append(x)
+                                        create_rule(bp_setting, working_list)
+                else:
+                	change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
 	else:
                 print('\n')
@@ -229,25 +276,33 @@ def main():
 	user_change = user_prompt_settings(setting, url, bp_setting)
 	if user_change:
 		working_list = get_working_list(file_list, setting)
-		change_setting(working_list, setting, bp_setting, ch_setting_func)
+                if not working_list:
+                        for x in file_list:
+                                if 'apache2.conf' in x:
+                                        working_list.append(x)
+                                        create_rule(bp_setting, working_list)
+                else:
+                	change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
 	else:
                 print('\n')
 
 	# Limit Requestline
-	#setting = 'LimitRequestline'
-	#bp_setting = 'LimitRequestline 512'
-	#url = 'https://apache-patchy.gitbook.io/guide/preventing-buffer-overflow-attacks'
-	#ch_setting_func = 'find_replace'
-	#user_change = user_prompt_settings(setting, url, bp_setting)
-	#if user_change:
-	#	working_list = get_working_list(file_list, setting)
-	#	if not working_list:
-	#		for x in file_list:
-	#			if 'apache2.conf' in x:
-	#				working_list.append(x)
-	#	change_setting(working_list, setting, bp_setting, ch_setting_func)
-	#	working_list.clear()
+        setting = 'LimitRequestline'
+        bp_setting = 'LimitRequestline 512'
+        url = 'https://apache-patchy.gitbook.io/guide/preventing-buffer-overflow-attacks'
+                ch_setting_func = 'find_replace'
+        user_change = user_prompt_settings(setting, url, bp_setting)
+        if user_change:
+                working_list = get_working_list(file_list, setting)
+                if not working_list:
+                        for x in file_list:
+                                if 'apache2.conf' in x:
+                                        working_list.append(x)
+                                        create_rule(bp_setting, working_list)
+                else:
+                	change_setting(working_list, setting, bp_setting, ch_setting_func)
+                working_list.clear()
 
 	# write the log file
 	with open('log_file.log', 'w+') as final_log:
