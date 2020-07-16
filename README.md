@@ -2,11 +2,11 @@
 
 Apache Patchy is a guide to harden Apache web servers and make them more secure against outside attacks. It also includes a Python script that, when run against a server's .conf files, will configure the server to abide by best practices for security. Patchy Apache assumes working knowledge of Linux, and a familiarity with how to use and install Apache, and is geared towards Apache users and administrators who want to make sure their server is as secure as possible. 
 
-Best practices were based on the Center for Internet Security's Apache HTTP Server 2.4 Benchmark document, which can be found [here][1]. 
+Best practices were based on the Center for Internet Security's Apache HTTP Server 2.4 Benchmark document, which can be found [here][1]. *While a lot of their recommendations have been tested for efficacy, there is always the chance that they may not be right for you and your organization. **Due diligence is required before changing the configuration of any business critical systems.***
 
 ## How to read the guide
 
-The guide document takes users through best security practices for an Apache web server. These best practices are organized by category, and each one states a purpose to briefly explain what the setting does and why it makes sense to use the suggested setting, as well as why this affects security and why other settings can cause trouble. The default settings, if they exist, are also listed so the user can more easily find them. Whenever possible, the guide links to Apache foundation documentation for the setting in question. 
+The guide document takes users through best security practices for an Apache web server. These best practices are organized by category, and each one states a purpose to briefly explain what the setting does and why it makes sense to use the suggested setting, as well as why this affects security and why other settings can cause trouble. The default settings, if they exist, are also listed so the user can more easily find them. Whenever possible, the guide links to Apache foundation documentation for the setting in question. P
 
 This guide can be found [here][2].
 
