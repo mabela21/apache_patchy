@@ -6,7 +6,7 @@ Best practices were based on the Center for Internet Security's Apache HTTP Serv
 
 ## How to read the guide
 
-The guide document takes users through best security practices for an Apache web server. These best practices are organized by category, and each one states a purpose to briefly explain what the setting does and why it makes sense to use the suggested setting, as well as why this affects security and why other settings can cause trouble. The default settings, if they exist, are also listed so the user can more easily find them. Whenever possible, the guide links to Apache foundation documentation for the setting in question. P
+The guide document takes users through best security practices for an Apache web server. These best practices are organized by category, and each one states a purpose to briefly explain what the setting does and why it makes sense to use the suggested setting, as well as why this affects security and why other settings can cause trouble. The default settings, if they exist, are also listed so the user can more easily find them. Whenever possible, the guide links to Apache foundation documentation for the setting in question.
 
 This guide can be found [here][2].
 
