@@ -277,7 +277,7 @@ def main():
 
 	# Set log level
 	setting = 'LogLevel'
-	bp_setting = 'LogLevel notice core:info'
+	bp_setting = 'LogLevel info'
 	#bp_setting = 'LogLevel notice core:info'
 	url = Fore.GREEN + 'For more info see --> [18] ' + Style.RESET_ALL + 'at https://apache-blue.gitbook.io/guide/logs'
 	ch_setting_func = 'find_replace'
@@ -312,15 +312,21 @@ def main():
 			change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
 	
-	dnow = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-	dtnow = str(dnow)
-	log_name = dtnow + "_apache_blue.log"
-	# write the log file
-	with open(log_name, 'w+') as final_log:
-		for events in log_file:
-			final_log.write(events + '\n')
+	print(f"\n\n\nLooks like you're all set!")
 
-	print(f"\n\n\nLooks like you're all set! To review the settings that were changed, please see " + Fore.GREEN + f"./{log_name}" + Style.RESET_ALL)
+	if log_file:
+		dnow = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+		dtnow = str(dnow)
+		log_name = dtnow + "_apache_blue.log"
+		# write the log file
+		with open(log_name, 'w+') as final_log:
+			for events in log_file:
+				final_log.write(events + '\n')
+		print(f"\nTo review the settings that were changed, please see " + Fore.GREEN + f"./{log_name}" + Style.RESET_ALL)
+	else:
+		print("\nNo settings were changed.")
+
+	#print(f"\n\n\nLooks like you're all set! To review the settings that were changed, please see " + Fore.GREEN + f"./{log_name}" + Style.RESET_ALL)
 	print(Fore.CYAN + "\nFor more information about hardening Apache servers, visit https://apache-blue.gitbook.io/guide" + Style.RESET_ALL)
 	print("\nThanks again for using " + Fore.CYAN + "apache_blue. " + Style.RESET_ALL + "Have a great day!\n\n")
 
