@@ -288,21 +288,21 @@ def main():
                 print('\n')
 
 	# Limit Requestline
-        setting = 'LimitRequestline'
-        bp_setting = 'LimitRequestline 512'
-        url = 'https://apache-patchy.gitbook.io/guide/preventing-buffer-overflow-attacks'
-                ch_setting_func = 'find_replace'
-        user_change = user_prompt_settings(setting, url, bp_setting)
-        if user_change:
-                working_list = get_working_list(file_list, setting)
-	        if not working_list:
-	            for x in file_list:
-                    if 'apache2.conf' in x:
-                        working_list.append(x)
-                        create_rule(bp_setting, working_list)
-	        else:
-	        	change_setting(working_list, setting, bp_setting, ch_setting_func)
-        	working_list.clear()
+    setting = 'LimitRequestline'
+    bp_setting = 'LimitRequestline 512'
+    url = 'https://apache-patchy.gitbook.io/guide/preventing-buffer-overflow-attacks'
+            ch_setting_func = 'find_replace'
+    user_change = user_prompt_settings(setting, url, bp_setting)
+    if user_change:
+            working_list = get_working_list(file_list, setting)
+        if not working_list:
+            for x in file_list:
+                if 'apache2.conf' in x:
+                    working_list.append(x)
+                    create_rule(bp_setting, working_list)
+        else:
+        	change_setting(working_list, setting, bp_setting, ch_setting_func)
+    	working_list.clear()
 
 	# write the log file
 	with open('log_file.log', 'w+') as final_log:
