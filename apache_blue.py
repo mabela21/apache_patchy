@@ -5,6 +5,7 @@ from datetime import datetime
 from colorama import Fore, Back, Style
 
 log_file = list()
+dtnow = str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 # print the banner
 def banner_print():
@@ -44,12 +45,12 @@ def conf_files(path):
 
 # make backups of config files
 def backup_files(conf_list):
-	dnow = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
-	dtnow = str(dnow)
+	global dtnow
 	with tempfile.TemporaryDirectory() as directory:
 		for files in conf_list:
 			shutil.copy2(files, directory)
 		shutil.make_archive('./apache_blue/backup_files/' + dtnow, 'zip', directory)
+	print('All configuration files were backed up and zipped inside ./apache_blue/backup_files')
 
 
 # check config file for a setting
@@ -84,17 +85,17 @@ def find_replace(file, item, new_line):
 
 # function to comment, a file
 def comment_settings(file, item):
-        rewritten_file = []
-        re_item = r'\b' + re.escape(item) + r'\b'
-        with open(file, 'r') as open_file:
-                for lines in open_file:
-                        if re.match(re_item, lines) and '#' not in lines:
-                                rewritten_file.append('#' + lines)
-                        else:
-                                rewritten_file.append(lines)
-        with open(file, 'w+') as new_config:
-                for lines in rewritten_file:
-                        new_config.write(lines)
+	rewritten_file = []
+	re_item = r'\b' + re.escape(item) + r'\b'
+	with open(file, 'r') as open_file:
+        for lines in open_file:
+            if re.match(re_item, lines) and '#' not in lines:
+                rewritten_file.append('#' + lines)
+            else:
+                rewritten_file.append(lines)
+	with open(file, 'w+') as new_config:
+        for lines in rewritten_file:
+            new_config.write(lines)
 
 # change the setting with proper function
 def change_setting(w_list, setting, new_setting, set_func):
@@ -111,14 +112,6 @@ def change_setting(w_list, setting, new_setting, set_func):
 	w_list.clear()
 	print('\n')
 
-# add setting change to the log file
-def add_to_log(file, new_setting):
-	global log_file
-	dnow = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-	dtnow = str(dnow)
-	log_line = dtnow + ': ' + file + ': ' + 'Changed setting to: ' + new_setting
-	return log_file.append(log_line)
-
 # prompt user to make change to settings
 def user_prompt_settings(setting, url, new_setting):
 	print(f'{setting}: ' + Fore.YELLOW + 'Do you want to change setting to: ' + Fore.CYAN + f'{new_setting}' + '\n' + Style.RESET_ALL + url)
@@ -129,6 +122,13 @@ def user_prompt_settings(setting, url, new_setting):
 		return True
 	elif yes_no == 'N' or yes_no == 'n':
 		return False
+
+# add setting change to the log file
+def add_to_log(file, new_setting):
+	global log_file
+	dtnow = str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+	log_line = dtnow + ': ' + file + ': ' + 'Changed setting to: ' + new_setting
+	return log_file.append(log_line)		
 
 # main function to change a rule in a config file
 def change_rule(file_list, setting, bp_setting, ch_setting_func, user_change):
@@ -166,9 +166,8 @@ def create_rule(bestprac, file):
 
 # write log file to directroy
 def write_log(log_file):
+	global dtnow
 	if log_file:
-		dnow = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
-		dtnow = str(dnow)
 		log_name = dtnow + "_apache_blue.log"
 		# write the log file
 		with open('./apache_blue/log_files/' + log_name, 'w+') as final_log:
@@ -185,6 +184,7 @@ def main():
 	directory = sys.argv[1]
 	# find all config files
 	file_list = conf_files(directory)
+	# creates an archive of all config as backups
 	backup_files(file_list)
 	# check if apache_blue directory exists
 	ab_dir_check()
