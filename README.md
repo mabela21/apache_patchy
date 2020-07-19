@@ -16,7 +16,7 @@ This guide can be found [here][2].
 
 **REQUIREMENTS: The Apache Blue script uses the OS, colorama, and datetime modules for Python 3. Please make sure your Python libraries are up to date.**
 
-The included Python script, `apache_blue.py`, when run against the existing Apache `.conf` files, finds settings that are not in line with the best practices mentioned in the guide, prompts the user for whether or not they want to change each setting, and alters the file as recommended if the user agrees. It also writes a log file that takes down the date and time these alterations were made, lists what settings were changed, and the files they were changed in for auditing purposes. 
+The Python script, apache_blue.py, when run against the existing Apache .conf files, finds settings that are not in line with the recommendations mentioned in the guide, prompts the user for whether or not they want to change each setting, and then enacts that change if the user agrees. It also writes a log file that takes down the date and time these alterations were made, lists what settings were changed, and the files they were changed in for auditing purposes.
 
 To use this script, in your terminal, enter 
 
