@@ -79,10 +79,13 @@ def find_replace(file, item, new_line):
 				rewritten_file.append(new_line + '\n')
 			else:
 				rewritten_file.append(lines)
-	with open(file, 'w+') as new_config:
-				for lines in rewritten_file:
-					new_config.write(lines)
-
+	try:
+		with open(file, 'w+') as new_config:
+					for lines in rewritten_file:
+						new_config.write(lines)
+	except:
+		print('You don't have permission to write to configuration files. Are you root?')
+						
 # change the setting with proper function
 def change_setting(w_list, setting, new_setting, set_func):
 	if set_func == 'find_replace':
@@ -154,7 +157,7 @@ def write_log(log_file):
 		with open('./apache_blue/log_files/' + log_name, 'w+') as final_log:
 			for events in log_file:
 				final_log.write(events + '\n')
-		print(f"\nTo review the settings that were changed, please see " + Fore.GREEN + f"./{log_name}" + Style.RESET_ALL)
+		print(f"\nTo review the settings that were changed, please see " + Fore.GREEN + f"./apache_blue/log_files/{log_name}" + Style.RESET_ALL)
 	else:
 		print("\nNo settings were changed, no log created.\n")
 
@@ -279,7 +282,7 @@ def main():
 
 	write_log(log_file)
 	
-	#print(f"\n\n\nLooks like you're all set! To review the settings that were changed, please see " + Fore.GREEN + f"./apache_blue/{log_name}" + Style.RESET_ALL)
+	#print(f"\n\n\nLooks like you're all set! To review the settings that were changed, please see " + Fore.GREEN + f"./apache_blue/log_files/{log_name}" + Style.RESET_ALL)
 	print(Fore.CYAN + "\nFor more information about hardening Apache servers, visit https://apache-blue.gitbook.io/guide" + Style.RESET_ALL)
 	print("\nThanks again for using " + Fore.CYAN + "apache_blue. " + Style.RESET_ALL + "Have a great day!\n\n")
 
