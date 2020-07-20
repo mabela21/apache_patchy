@@ -156,7 +156,7 @@ def write_log(log_file):
 				final_log.write(events + '\n')
 		print(f"\nTo review the settings that were changed, please see " + Fore.GREEN + f"./{log_name}" + Style.RESET_ALL)
 	else:
-		print("\nNo settings were changed, no log created.")
+		print("\nNo settings were changed, no log created.\n")
 
 def main():
 	#print program's banner
