@@ -41,6 +41,7 @@ def conf_files(path):
 			if file.endswith('.conf'):
 				fname = os.path.join(pd, file)
 				config_files.append(fname)
+	
 	return config_files
 
 # make backups of config files
@@ -52,7 +53,20 @@ def backup_files(conf_list):
 		shutil.make_archive('./apache_blue/backup_files/' + dtnow, 'zip', directory)
 	print('All configuration files were backed up and zipped inside ./apache_blue/backup_files\n')
 
-
+# set default config file
+def main_conf_file(file_list):
+	if 'apache2.conf' in file_list:
+        	main_conf_file = 'apache2.conf'
+    	else:
+        	print("Which of the following files is your main Apache configuration file?: ")
+        	for conf in file_list:
+            		print(conf)
+        	main_conf_file = input()
+        	while main_conf_file not in file_list:
+            		main_conf_file = input("This file is not present. Which of the above files is your main Apache configuration file?: ")
+        	print(f"\nThank you, {main_conf_file} will be treated as the main configuration file.\n\n")
+	retrun main_conf_file
+	
 # check config file for a setting
 def check_file(file, content):
 	re_content = r'\b' + content + r'\b'
@@ -112,14 +126,12 @@ def add_to_log(file, new_setting):
 	return log_file.append(log_line)		
 
 # main function to change a rule in a config file
-def change_rule(file_list, setting, bp_setting, ch_setting_func, user_change):
+def change_rule(file_list, setting, bp_setting, ch_setting_func, user_change, main_file):
 	if user_change:
 		working_list = get_working_list(file_list, setting)
 		if not working_list:
-			for x in file_list:
-				if 'apache2.conf' in x:
-					working_list.append(x)
-					create_rule(bp_setting, working_list)
+			working_list.append(main_file)
+			create_rule(bp_setting, working_list)
 		else:
 			change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
@@ -135,7 +147,7 @@ def change_rule_prompt(file_list, setting, bp_setting, ch_setting_func, user_cha
 		change_setting(working_list, setting, bp_setting, ch_setting_func)
 		working_list.clear()
 	else:
-				print('\n')
+		print('\n')
 
 # create a rule if it does not exist in any conf files
 def create_rule(bestprac, file):
@@ -167,16 +179,18 @@ def main():
 	file_list = conf_files(directory)
 	# creates an archive of all config as backups
 	backup_files(file_list)
+	# check for main config file
+	main_file = main_conf_file(file_list)
 	# check if apache_blue directory exists
 	ab_dir_check()
-
+		
 	# Server Tokens setting
 	setting = 'ServerTokens'
 	bp_setting = 'ServerTokens Prod'
 	url = Fore.GREEN + 'For more info see --> [20] ' + Style.RESET_ALL + 'at https://apache-blue.gitbook.io/guide/info-leakage'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
-	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change)
+	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change, main_file)
 
 	# Server signature setting
 	setting = 'ServerSignature'
@@ -184,7 +198,7 @@ def main():
 	url = Fore.GREEN + 'For more info see --> [21] ' + Style.RESET_ALL + 'at https://apache-blue.gitbook.io/guide/info-leakage'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
-	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change)
+	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change, main_file)
 
 	# Keep Alive setting
 	setting = 'KeepAlive'
@@ -192,7 +206,7 @@ def main():
 	url = Fore.GREEN + 'For more info see --> [24] ' + Style.RESET_ALL + 'at https://apache-blue.gitbook.io/guide/dos-attacks'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
-	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change)
+	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change, main_file)
 	
 	# ETag settings
 	setting = 'FileETag'
@@ -200,7 +214,7 @@ def main():
 	url = Fore.GREEN + 'For more info see --> [22] ' + Style.RESET_ALL + 'at https://apache-blue.gitbook.io/guide/info-leakage'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
-	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change)
+	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change, main_file)
 	
 	# Timeout settings
 	setting = 'Timeout'
@@ -208,7 +222,7 @@ def main():
 	url = Fore.GREEN + 'For more info see --> [23] ' + Style.RESET_ALL + 'at https://apache-blue.gitbook.io/guide/dos-attacks'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
-	change_rule_prompt(file_list, setting, bp_setting, ch_setting_func, user_change)
+	change_rule_prompt(file_list, setting, bp_setting, ch_setting_func, user_change, main_file)
 	
 	# Max Keep Alive Requests
 	setting = 'MaxKeepAliveRequests'
@@ -216,7 +230,7 @@ def main():
 	url = Fore.GREEN + 'For more info see --> [25] ' + Style.RESET_ALL + 'at https://apache-blue.gitbook.io/guide/dos-attacks'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
-	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change)
+	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change, main_file)
 	
 	# Keep Alive Timeout
 	setting = 'KeepAliveTimeout'
@@ -224,7 +238,7 @@ def main():
 	url = Fore.GREEN + 'For more info see --> [26] ' + Style.RESET_ALL + 'at https://apache-blue.gitbook.io/guide/dos-attacks'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
-	change_rule_prompt(file_list, setting, bp_setting, ch_setting_func, user_change)
+	change_rule_prompt(file_list, setting, bp_setting, ch_setting_func, user_change, main_file)
 
 	# Disable Trace enable
 	setting = 'TraceEnable'
@@ -232,7 +246,7 @@ def main():
 	url = Fore.GREEN + 'For more info see --> [17] ' + Style.RESET_ALL + 'at https://apache-blue.gitbook.io/guide/attack-surface'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
-	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change)
+	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change, main_file)
 
 	# Set log level
 	setting = 'LogLevel'
@@ -241,7 +255,7 @@ def main():
 	url = Fore.GREEN + 'For more info see --> [18] ' + Style.RESET_ALL + 'at https://apache-blue.gitbook.io/guide/logs'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
-	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change)
+	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change, main_file)
 	
 	# Limit Requestline
 	setting = 'LimitRequestline'
@@ -249,7 +263,7 @@ def main():
 	url = Fore.GREEN + 'For more info see --> [29] ' + Style.RESET_ALL + 'https://apache-blue.gitbook.io/guide/bof-attacks'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
-	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change)
+	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change, main_file)
 
 	# Limit Request Fields
 	setting = 'LimitRequestFields'
@@ -257,7 +271,7 @@ def main():
 	url = Fore.GREEN + 'For more info see --> [30] ' + Style.RESET_ALL + 'https://apache-blue.gitbook.io/guide/bof-attacks'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
-	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change)
+	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change, main_file)
 
 	# Limit Request Field size
 	setting = 'LimitRequestFieldsize'
@@ -265,7 +279,7 @@ def main():
 	url = Fore.GREEN + 'For more info see --> [31] ' + Style.RESET_ALL + 'https://apache-blue.gitbook.io/guide/bof-attacks'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
-	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change)
+	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change, main_file)
 
 	# Limit Request Body
 	setting = 'LimitRequestBody'
@@ -273,7 +287,7 @@ def main():
 	url = Fore.GREEN + 'For more info see --> [32] ' + Style.RESET_ALL + 'https://apache-blue.gitbook.io/guide/bof-attacks'
 	ch_setting_func = 'find_replace'
 	user_change = user_prompt_settings(setting, url, bp_setting)
-	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change)
+	change_rule(file_list, setting, bp_setting, ch_setting_func, user_change, main_file)
 		
 	print(f"\n\n\nLooks like you're all set!")
 
