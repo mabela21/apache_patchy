@@ -84,7 +84,7 @@ def find_replace(file, item, new_line):
 					for lines in rewritten_file:
 						new_config.write(lines)
 	except:
-		print('You don't have permission to write to configuration files. Are you root?')
+		print("You don't have permission to write to configuration files. Are you root?")
 						
 # change the setting with proper function
 def change_setting(w_list, setting, new_setting, set_func):
