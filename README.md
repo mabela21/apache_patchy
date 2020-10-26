@@ -28,3 +28,5 @@ Each setting handled by the script references that setting's number in the guide
 
 [1]: https://drive.google.com/file/d/1vCs7GY0hdpjl42u7_hpR5LzU9sfBIk-e/view
 [2]: https://apache-blue.gitbook.io/guide/
+
+Contributors: Michael Abela, Anjili Pal, John Dolan
